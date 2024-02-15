@@ -16,13 +16,40 @@ namespace jani_a_varban
         public Enemy(Game1 game)
         {
             this.game = game;
+            bool invalidSpawn = true;
             position.X = rand.Next(3, 13) * 72;
             position.Y = rand.Next(3, 13) * 72;
+            while (invalidSpawn)
+            {
+                if (mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72)] == 1)
+                {
+                position.X = rand.Next(3, 13) * 72;
+                position.Y = rand.Next(3, 13) * 72;
+                } else invalidSpawn = false;
+            }
         }
         public void Move()
         {
-            if (rand.Next(2) == 1) position.X = rand.Next(2) == 1 ? position.X + 72 : position.X - 72;
-            else position.Y = rand.Next(2) == 1 ? position.Y + 72 : position.Y - 72;
+            switch (rand.Next(5))
+            {
+                case 0:
+                    if ((mapMatrix[(int)(position.Y / 72) - 1][(int)(position.X / 72)] == 0)) position.Y -= 72;
+                    else Move();
+                    break;
+                case 1:
+                    if ((mapMatrix[(int)(position.Y / 72) + 1][(int)(position.X / 72)] == 0)) position.Y += 72;
+                    else Move();
+                    break;
+                case 2:
+                    if ((mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72) - 1] == 0)) position.X -= 72;
+                    else Move();
+                    break;
+                case 3:
+                    if ((mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72) + 1] == 0)) position.X += 72;
+                    else Move();
+                    break;
+                default: break;
+            }
         }
     }
 }
