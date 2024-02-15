@@ -12,11 +12,11 @@ Források:
 - UI: https://github.com/RonenNess/GeonBit.UI?tab=readme-ov-file
 - Pálya generálás (Randomized depth-first search algoritmus) - [saját implementáció]: https://en.wikipedia.org/wiki/Depth-first_search
 ---
+Hiányzik:
 
-    Hiányzik:
-    - Harc,
-    - Eszköztár?
-    - Póstás
+- Harc,
+- Eszköztár?
+- Póstás
 
 Kiosztás:
 >
