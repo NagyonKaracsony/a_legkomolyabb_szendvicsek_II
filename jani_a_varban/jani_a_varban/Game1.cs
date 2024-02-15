@@ -12,11 +12,13 @@ namespace jani_a_varban
         public static Texture2D floorTexture;
         public static Texture2D wallTexture;
         public GraphicsDeviceManager _graphics;
+        public GraphicsDevice _device;
         public SpriteBatch _spriteBatch;
-        public const int MapWidth = 14;
-        public const int MapHeight = 14;
-        public Vector2 EnteranceCoordinates = new Vector2();
-        public Vector2 ExitCoordinates = new Vector2();
+        public const int MapWidth = 15;
+        public const int MapHeight = 15;
+        public Camera _camera;
+        public static Vector2 EnteranceCoordinates = new Vector2();
+        public static Vector2 ExitCoordinates = new Vector2();
         public static List<Enemy> enemyList = new List<Enemy>();
         public static List<List<int>> mapMatrix = Map.Generate(MapWidth, MapHeight);
         public Game1()
@@ -30,6 +32,8 @@ namespace jani_a_varban
         {
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
+            _camera = new Camera(new Vector2(MapHeight*36, MapWidth*36));
+            
             _graphics.ApplyChanges();
             base.Initialize();
         }
@@ -62,7 +66,7 @@ namespace jani_a_varban
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DimGray);
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(transformMatrix: _camera.GetViewMatrix(GraphicsDevice));
 
             Map.DrawMap(_spriteBatch, mapMatrix);
             _spriteBatch.Draw(playerTexture, player.Position, Color.White);
