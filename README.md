@@ -1,4 +1,5 @@
 # a_legkomolyabb_szendvicsek_II
+<<<<<<< HEAD
 
 Csakis a legkomolyabb szerndvicsek
 <h1>Jani a várban™</h1>
@@ -40,3 +41,6 @@ Kiosztás:
 >    </ul>
 ></li>
 ></ul>
+=======
+Csakis a legkomolyabb szendvicsek
+>>>>>>> b3e2597f5113197f0226c560a6342e5b4547d629
