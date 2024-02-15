@@ -25,9 +25,10 @@ namespace jani_a_varban
                 for (int j = 1; j < width - 1; j++) labyrinth[i][j] = 2;
             }
 
-            int entranceRow = random.Next(2, height - 2);
+            int entranceRow = random.Next(2, (height - 2));
             labyrinth[entranceRow][0] = 0; // Entrance
-            int exitRow = random.Next(1, height - 1);
+            Game1.EnteranceCoordinates = new Vector2 { X = 0, Y = entranceRow * 72 };
+            int exitRow = random.Next(2, height - 2);
             labyrinth[exitRow][width - 1] = 0; // Exit
 
             Stack<(int, int)> stack = new Stack<(int, int)>();
@@ -47,6 +48,28 @@ namespace jani_a_varban
                 }
                 else current = stack.Pop();
             }
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++) if (labyrinth[i][j] == 2)
+                    {
+                        if (!((i == 1) || (i == MapHeight) || (j == 1) || (j == MapWidth) || (i == (MapWidth - 1)) || (j == (MapWidth - 1))))
+                        {
+                            if (random.Next(20) == 1) labyrinth[i][j] = 0;
+                        }
+                    }
+            }
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++) if (labyrinth[i][j] == 2) labyrinth[i][j] = 1;
+            }
+
+            for (int i = 1; i < 3; i++) labyrinth[exitRow][width - i] = 0;
+            /*
+             void corner checker()
+             void hallway breaker()?
+             */
             return labyrinth;
         }
 
@@ -86,19 +109,14 @@ namespace jani_a_varban
         {
             List<List<int>> labyrinth = mapMatrix;
 
-            foreach (var enemy in Game1.enemyList)
-            {
-                Debug.Write(enemy.position/72);
-                Debug.WriteLine(enemy.Hp);
-            }
             int height = labyrinth.Count;
             int width = labyrinth[0].Count;
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
                 {
-                    char cell = labyrinth[i][j] == 0 ? '0' : labyrinth[i][j] == 1 ? '1' : labyrinth[i][j] == 2 ? 'y' : 'x';
-                    Debug.Write(cell);
+                    // char cell = labyrinth[i][j] == 0 ? '0' : labyrinth[i][j] == 1 ? '1' : labyrinth[i][j] == 2 ? 'y' : 'x';                    
+                    Debug.Write(labyrinth[i][j]);
                 }
                 Debug.WriteLine("");
             }
@@ -107,9 +125,9 @@ namespace jani_a_varban
         {
             int x = 0;
             int m = 0;
-            for (int i = 0; i < MapWidth; i++)
+            for (int i = 0; i < MapHeight; i++)
             {
-                for (int y = 0; y < MapHeight; y++)
+                for (int y = 0; y < MapWidth; y++)
                 {
                     if (mapData[i][y] == 0) spriteBatch.Draw(floorTexture, new Vector2(x, m), Color.White);
                     else spriteBatch.Draw(wallTexture, new Vector2(x, m), Color.White);
