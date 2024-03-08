@@ -49,7 +49,7 @@ namespace jani_a_varban
             this.MovementLockDelay = 5;
 
             CheckForEnemy(true);
-            foreach (var enemy in enemyList) enemy.Move();
+            foreach (var enemy in enemyList) enemy.ApproachPlayer();
             CheckForEnemy(false);
         }
         public Player()
