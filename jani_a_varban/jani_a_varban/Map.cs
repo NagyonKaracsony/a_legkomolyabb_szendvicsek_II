@@ -51,25 +51,46 @@ namespace jani_a_varban
 
             for (int i = 0; i < height; i++)
             {
-                for (int j = 0; j < width; j++) if (labyrinth[i][j] == 2)
-                    {
-                        if (!((i == 1) || (i == MapHeight) || (j == 1) || (j == MapWidth) || (i == (MapWidth - 1)) || (j == (MapWidth - 1))))
-                        {
-                            if (random.Next(20) == 1) labyrinth[i][j] = 0;
-                        }
-                    }
-            }
-
-            for (int i = 0; i < height; i++)
-            {
                 for (int j = 0; j < width; j++) if (labyrinth[i][j] == 2) labyrinth[i][j] = 1;
             }
 
-            for (int i = 1; i < 3; i++) labyrinth[exitRow][width - i] = 0;
+            for (int i = 1; i < height - 1; i++)
+            {
+                for (int j = 1; j < width - 1; j++)
+                {
+                    if (labyrinth[i][j] == 1)
+                    {
+                        int neighbourWallCount = 0;
+                        int diagonalNeighbourWallCount = 0;
+
+                        if (labyrinth[i + 1][j] == 1) neighbourWallCount++;
+                        if (labyrinth[i - 1][j] == 1) neighbourWallCount++;
+                        if (labyrinth[i][j + 1] == 1) neighbourWallCount++;
+                        if (labyrinth[i][j - 1] == 1) neighbourWallCount++;
+
+                        if (labyrinth[i + 1][j + 1] == 1) diagonalNeighbourWallCount++;
+                        if (labyrinth[i + 1][j - 1] == 1) diagonalNeighbourWallCount++;
+                        if (labyrinth[i - 1][j - 1] == 1) diagonalNeighbourWallCount++;
+                        if (labyrinth[i - 1][j + 1] == 1) diagonalNeighbourWallCount++;
+                        if (neighbourWallCount + diagonalNeighbourWallCount < 2) if (random.Next(10) == 1) labyrinth[i][j] = 0;
+                            else if (diagonalNeighbourWallCount == 2) if (random.Next(5) == 1) labyrinth[i][j] = 0;
+                    }
+                }
+            }
+
+            for (int i = 1; i < 4; i++) labyrinth[exitRow][width - i] = 0;
             /*
              void corner checker()
              void hallway breaker()?
              */
+
+            /*
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++) labyrinth[i][j] = 0;
+            }
+            */
+
             return labyrinth;
         }
 
@@ -99,27 +120,17 @@ namespace jani_a_varban
         }
         private static void RemoveWall((int, int) current, (int, int) next, List<List<int>> labyrinth)
         {
-            int x1 = current.Item1;
-            int y1 = current.Item2;
-            int x2 = next.Item1;
-            int y2 = next.Item2;
-            labyrinth[(x1 + x2) / 2][(y1 + y2) / 2] = 0; // Clear the wall between the cells
+            labyrinth[(current.Item1 + next.Item1) / 2][(current.Item2 + next.Item2) / 2] = 0; // Clear the wall between the cells
         }
         public static void Display()
         {
+            // char cell = labyrinth[i][j] == 0 ? '0' : labyrinth[i][j] == 1 ? '1' : labyrinth[i][j] == 2 ? 'y' : 'x';                    
             List<List<int>> labyrinth = mapMatrix;
-
-            int height = labyrinth.Count;
-            int width = labyrinth[0].Count;
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < labyrinth.Count; i++)
             {
-                for (int j = 0; j < width; j++)
-                {
-                    // char cell = labyrinth[i][j] == 0 ? '0' : labyrinth[i][j] == 1 ? '1' : labyrinth[i][j] == 2 ? 'y' : 'x';                    
-                    Debug.Write(labyrinth[i][j]);
-                }
+                for (int j = 0; j < labyrinth[0].Count; j++) Debug.Write(labyrinth[i][j]);
                 Debug.WriteLine("");
-            }
+            } 
         }
         public static void DrawMap(SpriteBatch spriteBatch, List<List<int>> mapData)
         {
