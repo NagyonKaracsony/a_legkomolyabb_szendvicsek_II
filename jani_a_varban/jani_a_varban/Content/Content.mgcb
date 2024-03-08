@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:../Textures/hero-down.png;hero-down.png
 
+#begin ../Textures/kakanyalo_elorol.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../Textures/kakanyalo_elorol.png;kakanyalo_elorol.png
+
 #begin ../Textures/skeleton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -48,6 +60,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../Textures/skeleton.png;skeleton.png
+
+#begin ../Textures/wall-texture2.webp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../Textures/wall-texture2.webp;wall-texture2.webp
 
 #begin ../Textures/wall.png
 /importer:TextureImporter
