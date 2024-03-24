@@ -1,13 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 namespace jani_a_varban
 {
-    public class Enemy : Game1
+    public class Enemy
     {
         public static Random rand = new();
         public int hp = rand.Next(2) == 1 ? 200 : 300;
         public int dmg = rand.Next(2) == 1 ? 200 : 300;
+        public int dp = 20;
+        public Texture2D Texture;
+        public bool HasKey = false;
         public Vector2 position;
         public Vector2 Position
         {
@@ -16,15 +20,15 @@ namespace jani_a_varban
         }
         public Enemy()
         {
+            Texture = Animation.enemyTextures[rand.Next(0, 2)];
+            Debug.WriteLine(Texture.Name);
             bool invalidSpawn = true;
-            position.X = rand.Next(2, MapHeight - 2) * 72;
-            position.Y = rand.Next(2, MapWidth - 2) * 72;
+            position = new Vector2(rand.Next(2, Game1.MapHeight - 2) * 72, rand.Next(2, Game1.MapWidth - 2) * 72);
             while (invalidSpawn)
             {
-                if (mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72)] == 1)
+                if (Game1.mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72)] == 1)
                 {
-                    position.X = rand.Next(2, MapHeight - 2) * 72;
-                    position.Y = rand.Next(2, MapWidth - 2) * 72;
+                    position = new Vector2(rand.Next(2, Game1.MapHeight - 2) * 72, rand.Next(2, Game1.MapWidth - 2) * 72);
                 }
                 else invalidSpawn = false;
             }
@@ -32,49 +36,51 @@ namespace jani_a_varban
         public void ApproachPlayer()
         {
             bool intersects = false;
-            if (player.Position.X == position.X)
+            if (Game1.player.Position.X == position.X)
             {
-                if (player.Position.Y > position.Y)
+                if (Game1.player.Position.Y > position.Y)
                 {
-                    for (int i = ((int)(position.Y / 72)); i < ((int)(player.Position.Y / 72)) + 1; i++)
+                    for (int i = ((int)(position.Y / 72)); i < ((int)(Game1.player.Position.Y / 72)) + 1; i++)
                     {
-                        if (mapMatrix[i][((int)(position.X / 72))] == 1) intersects = true;
+                        if (Game1.mapMatrix[i][((int)(position.X / 72))] == 1) intersects = true;
                     }
                     if (!intersects) position.Y += 72;
                     else RandomMove();
                 }
-                else if (player.Position.Y < position.Y)
+                else if (Game1.player.Position.Y < position.Y)
                 {
-                    for (int i = ((int)(player.Position.Y / 72)); i < ((int)(position.Y / 72)) + 1; i++)
+                    for (int i = ((int)(Game1.player.Position.Y / 72)); i < ((int)(position.Y / 72)) + 1; i++)
                     {
-                        if (mapMatrix[i][((int)(position.X / 72))] == 1) intersects = true;
+                        if (Game1.mapMatrix[i][((int)(position.X / 72))] == 1) intersects = true;
                     }
                     if (!intersects) position.Y -= 72;
                     else RandomMove();
                 }
             }
-            else if (player.Position.Y == position.Y)
+            else if (Game1.player.Position.Y == position.Y)
             {
-                if (player.Position.X > position.X)
+                if (Game1.player.Position.X > position.X)
                 {
-                    for (int i = ((int)(position.X / 72)); i < ((int)(player.Position.X / 72)) + 1; i++)
+                    for (int i = ((int)(position.X / 72)); i < ((int)(Game1.player.Position.X / 72)) + 1; i++)
                     {
-                        if (mapMatrix[((int)(position.Y / 72))][i] == 1) intersects = true;
+                        if (Game1.mapMatrix[((int)(position.Y / 72))][i] == 1) intersects = true;
                     }
                     if (!intersects) position.X += 72;
                     else RandomMove();
 
                 }
-                else if (player.Position.X < position.X)
+                else if (Game1.player.Position.X < position.X)
                 {
-                    for (int i = ((int)(player.Position.X / 72)); i < ((int)(position.X / 72)) + 1; i++)
+                    for (int i = ((int)(Game1.player.Position.X / 72)); i < ((int)(position.X / 72)) + 1; i++)
                     {
-                        if (mapMatrix[((int)(position.Y / 72))][i] == 1) intersects = true;
+                        if (Game1.mapMatrix[((int)(position.Y / 72))][i] == 1) intersects = true;
                     }
                     if (!intersects) position.X -= 72;
                     else RandomMove();
                 }
-            } else RandomMove();
+                Game1.player.CheckForEnemy(false); // scuffed, nem itt kéne ellenőrizni de működik
+            }
+            else RandomMove();
         }
         public void RandomMove()
         {
@@ -83,28 +89,28 @@ namespace jani_a_varban
                 case 0:
                     if ((int)(position.Y / 72) != 0)
                     {
-                        if ((mapMatrix[(int)(position.Y / 72) - 1][(int)(position.X / 72)] == 0)) position.Y -= 72;
+                        if ((Game1.mapMatrix[(int)(position.Y / 72) - 1][(int)(position.X / 72)] == 0)) position.Y -= 72;
                     }
                     else RandomMove();
                     break;
                 case 1:
-                    if ((int)(position.Y / 72) != mapMatrix.Count - 1)
+                    if ((int)(position.Y / 72) != Game1.mapMatrix.Count - 1)
                     {
-                        if ((mapMatrix[(int)(position.Y / 72) + 1][(int)(position.X / 72)] == 0)) position.Y += 72;
+                        if ((Game1.mapMatrix[(int)(position.Y / 72) + 1][(int)(position.X / 72)] == 0)) position.Y += 72;
                     }
                     else RandomMove();
                     break;
                 case 2:
                     if ((int)(position.X / 72) != 0)
                     {
-                        if ((mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72) - 1] == 0)) position.X -= 72;
+                        if ((Game1.mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72) - 1] == 0)) position.X -= 72;
                     }
                     else RandomMove();
                     break;
                 case 3:
-                    if ((int)(position.X / 72) != mapMatrix.Count - 1)
+                    if ((int)(position.X / 72) != Game1.mapMatrix.Count - 1)
                     {
-                        if ((mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72) + 1] == 0)) position.X += 72;
+                        if ((Game1.mapMatrix[(int)(position.Y / 72)][(int)(position.X / 72) + 1] == 0)) position.X += 72;
                     }
                     else RandomMove();
                     break;
