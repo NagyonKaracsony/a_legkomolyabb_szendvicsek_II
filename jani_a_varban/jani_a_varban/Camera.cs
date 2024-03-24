@@ -6,7 +6,7 @@ namespace jani_a_varban
     public static class Camera
     {
         public static Vector2 Position;
-        public static float Zoom = 0.8f;
+        public static float Zoom = 1.0f;
         public static int previousScrollValue;
         public static Matrix GetViewMatrix(GraphicsDevice graphicsDevice)
         {
